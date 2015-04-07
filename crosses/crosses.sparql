@@ -1,0 +1,61 @@
+PREFIX :      <http://www.swows.org/test1#> 
+PREFIX xml:   <http://www.swows.org/xml#>
+PREFIX tuio:  <http://www.swows.org/tuio#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX vp:    <http://www.swows.org/viewport#> 
+CONSTRUCT {
+  :svgContainer
+    xml:hasChild <#cross> .
+
+  <#cross>
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "g"^^xsd:string ;
+    xml:hasAttribute <#cross_transform> ;
+    xml:hasChild <#cross_text> .
+
+  <#cross_transform>
+    a xml:Attr ;
+    xml:nodeName "transform"^^xsd:string ;
+    xml:nodeValue ?cross_transform_value .
+
+  <#cross_text>
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "text"^^xsd:string ;
+    xml:hasAttribute <#cross_text_x>, <#cross_text_y>, :text_style ;
+    xml:hasChild ?cross_text_txt .
+
+  <#cross_text_x>
+    a xml:Attr ;
+    xml:nodeName "x"^^xsd:string ;
+    xml:nodeValue "15"^^xsd:string .
+
+  <#cross_text_y>
+    a xml:Attr ;
+    xml:nodeName "y"^^xsd:string ;
+    xml:nodeValue "-15"^^xsd:string .
+
+  ?cross_text_txt
+    a xml:Text ;
+    xml:nodeName "#text"^^xsd:string ;
+    xml:nodeValue "hello world" .
+}
+
+WHERE {
+  ?tracked a tuio:Object .
+  ?tracked tuio:source tuio:defaultSource .
+  ?tracked tuio:position ?point .
+  ?point tuio:x ?tuio_x .
+  ?point tuio:y ?tuio_y .
+  BIND( ?tuio_x * ?vpWidth AS ?x ) .
+  BIND( ?tuio_y * ?vpHeight AS ?y ) .
+  BIND( URI(CONCAT(STR(:cross_text_txt_), (STR(?tracked)))) AS ?cross_text_txt ) .
+  BIND( CONCAT( "translate(", STR(?x) , ",", STR(?y), ")" ) AS ?cross_transform_value ) .
+  GRAPH :viewPortInfo {
+    <http://www.swows.org/rootedGraphs/instance#root>
+      vp:vpWidth ?vpWidth ;
+      vp:vpHeight ?vpHeight .
+  } .
+}
+

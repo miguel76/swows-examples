@@ -1,0 +1,5 @@
+<http://www.swows.org/tuio#defaultSource>
+      a       <http://www.swows.org/tuio#Source> ;
+      <http://www.swows.org/tuio#updateTime>
+              "0"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+

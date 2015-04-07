@@ -1,0 +1,41 @@
+PREFIX :      <http://www.swows.org/examples/circles#>
+PREFIX xml:   <http://www.swows.org/xml#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  :svgContainer xml:hasChild ?svgCircle .
+  ?svgCircle
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "circle"^^xsd:string ;
+    xml:hasAttribute ?svgCircle_cx, ?svgCircle_cy, ?svgCircle_r, <#svgCircle_style> .
+  <#svgCircle_style>
+    a xml:Attr ;
+    xml:nodeName "style"^^xsd:string ;
+    xml:nodeValue "fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:0"^^xsd:string .
+  ?svgCircle_cx
+    a xml:Attr ;
+    xml:nodeName "cx"^^xsd:string ;
+    xml:nodeValue ?svgCircle_cx_value .
+  ?svgCircle_cy
+    a xml:Attr ;
+    xml:nodeName "cy"^^xsd:string ;
+    xml:nodeValue ?svgCircle_cy_value .
+  ?svgCircle_r
+    a xml:Attr ;
+    xml:nodeName "r"^^xsd:string ;
+    xml:nodeValue ?svgCircle_r_value .
+}
+WHERE {
+  ?circle :centerX ?circleCenterX .
+  ?circle :centerY ?circleCenterY .
+  ?circle :radius ?circleRadius .
+  BIND( URI( CONCAT( STR(:svgCircle_), MD5(STR(?circle)) ) ) AS ?svgCircle ) .
+  BIND( URI( CONCAT( STR(:svgCircle_cx_), MD5(STR(?circle)) ) ) AS ?svgCircle_cx ) .
+  BIND( URI( CONCAT( STR(:svgCircle_cy_), MD5(STR(?circle)) ) ) AS ?svgCircle_cy ) .
+  BIND( URI( CONCAT( STR(:svgCircle_r_), MD5(STR(?circle)) ) ) AS ?svgCircle_r ) .
+  BIND( STR(?circleCenterX) AS ?svgCircle_cx_value ) .
+  BIND( STR(?circleCenterY) AS ?svgCircle_cy_value ) .
+  BIND( STR(?circleRadius) AS ?svgCircle_r_value ) .
+}
+

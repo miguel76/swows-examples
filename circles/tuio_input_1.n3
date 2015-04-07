@@ -1,0 +1,22 @@
+<http://www.swows.org/tuio/instance#pointPosition_28921506>
+      a       <http://www.swows.org/tuio#Point2D> ;
+      <http://www.swows.org/tuio#x>
+              0.16875 ;
+      <http://www.swows.org/tuio#y>
+              0.14583333 .
+
+<http://www.swows.org/tuio/instance#point_28921506>
+      a       <http://www.swows.org/tuio#Tracked> , <http://www.swows.org/tuio#Cursor> ;
+      <http://www.swows.org/tuio#creationTime>
+              9.903757 ;
+      <http://www.swows.org/tuio#position>
+              <http://www.swows.org/tuio/instance#pointPosition_28921506> ;
+      <http://www.swows.org/tuio#source>
+              <http://www.swows.org/tuio#defaultSource> ;
+      <http://www.swows.org/tuio#updateTime>
+              9.903757 .
+
+<http://www.swows.org/tuio#defaultSource>
+      <http://www.swows.org/tuio#updateTime>
+              9.903757 .
+

@@ -1,0 +1,67 @@
+PREFIX :      <http://www.swows.org/examples/circles#>
+PREFIX xml:   <http://www.swows.org/xml#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX vp:    <http://www.swows.org/viewport#> 
+PREFIX swi:   <http://www.swows.org/instance#>
+
+CONSTRUCT {
+
+  <#svgDoc>
+    a xml:Document ;
+    xml:hasChild :svgContainer .
+
+  :svgContainer
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "svg"^^xsd:string ;
+    xml:hasAttribute <#svg_width>, <#svg_height>, <#svg_version> ;
+    xml:hasChild <#svgBorderRect> .
+  <#svg_width>
+    a xml:Attr ;
+    xml:nodeName "width"^^xsd:string ;
+    xml:nodeValue ?svg_width_value .
+  <#svg_height>
+    a xml:Attr ;
+    xml:nodeName "height"^^xsd:string ;
+    xml:nodeValue ?svg_height_value .
+  <#svg_version>
+    a xml:Attr ;
+    xml:nodeName "version"^^xsd:string ;
+    xml:nodeValue "1.1"^^xsd:string .
+
+  <#svgBorderRect>
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "rect"^^xsd:string ;
+    xml:hasAttribute <#svgBorder_x>, <#svgBorder_y>, <#svgBorder_width>, <#svgBorder_height>, <#border_style>.
+  <#svgBorder_x>
+    a xml:Attr ;
+    xml:nodeName "x"^^xsd:string ;
+    xml:nodeValue "0"^^xsd:string .
+  <#svgBorder_y>
+    a xml:Attr ;
+    xml:nodeName "y"^^xsd:string ;
+    xml:nodeValue "0"^^xsd:string .
+  <#svgBorder_width>
+    a xml:Attr ;
+    xml:nodeName "width"^^xsd:string ;
+    xml:nodeValue ?svg_width_value .
+  <#svgBorder_height>
+    a xml:Attr ;
+    xml:nodeName "height"^^xsd:string ;
+    xml:nodeValue ?svg_height_value .
+
+  <#border_style>
+    a xml:Attr ;
+    xml:nodeName "style"^^xsd:string ;
+    xml:nodeValue "fill:none;stroke:#000000;stroke-width:3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"^^xsd:string .
+
+}
+WHERE {
+  swi:GraphRoot 
+    vp:vpWidth ?vpWidth ;
+    vp:vpHeight ?vpHeight .
+  BIND ( CONCAT( STR(?vpWidth), "px" ) AS ?svg_width_value ) .
+  BIND ( CONCAT( STR(?vpHeight), "px" ) AS ?svg_height_value ) .
+}
+

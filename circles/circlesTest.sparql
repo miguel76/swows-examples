@@ -1,0 +1,24 @@
+PREFIX :      <http://www.swows.org/examples/circles#>
+PREFIX tuio:  <http://www.swows.org/tuio#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX swi:   <http://www.swows.org/instance#>
+PREFIX dir:   </home/miguel/TUIO/circles/>
+
+CONSTRUCT {
+  ?circle :centerX ?circleCenterX .
+  ?circle :centerY ?circleCenterY .
+  ?circle :radius ?radius .
+}
+WHERE {
+  ?circle :creationTime ?circleCreationTime .
+  ?circle :centerX ?circleCenterX .
+  ?circle :centerY ?circleCenterY .
+  GRAPH dir:tuio_input.n3 {
+    tuio:defaultSource tuio:updateTime ?updateTime .
+  } .
+  GRAPH dir:config.n3 {
+    swi:GraphRoot :circleSpeed ?circleSpeed .
+  } .
+  BIND( ( ?updateTime - ?circleCreationTime ) * ?circleSpeed AS ?radius ) .
+}
+

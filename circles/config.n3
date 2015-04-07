@@ -1,0 +1,8 @@
+@prefix :        <http://www.swows.org/examples/circles#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix swi:   <http://www.swows.org/instance#> .
+
+swi:GraphRoot
+  :circlePeriod "0.8"^^xsd:double ;
+  :circleSpeed "200"^^xsd:double .
+

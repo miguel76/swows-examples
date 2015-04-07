@@ -1,0 +1,10 @@
+PREFIX xml:   <http://www.swows.org/xml#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX sfn:   <http://www.swows.org/function#>
+CONSTRUCT {
+
+<#mesh_line_style>
+  a xml:Attr ;
+  xml:nodeName "style"^^xsd:string ;
+  xml:nodeValue "fill:none;stroke:#9191ff;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:20;stroke-dasharray:20, 20"^^xsd:string .
+

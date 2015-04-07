@@ -1,0 +1,9 @@
+@prefix :        <http://www.swows.org/test1#> .
+@prefix xml:   <http://www.swows.org/xml#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix vp:    <http://www.swows.org/viewport#> .
+
+<http://www.swows.org/rootedGraphs/instance#root>
+  vp:vpWidth "1024"^^xsd:integer ;
+  vp:vpHeight "720"^^xsd:integer .
+

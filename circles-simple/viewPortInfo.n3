@@ -1,0 +1,8 @@
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix vp:   <http://www.swows.org/viewport#> .
+@prefix swi:   <http://www.swows.org/instance#> .
+
+swi:GraphRoot
+  vp:vpWidth "1024"^^xsd:integer ;
+  vp:vpHeight "720"^^xsd:integer .
+

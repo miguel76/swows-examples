@@ -1,0 +1,57 @@
+PREFIX :      <http://www.swows.org/examples/circles#>
+PREFIX tuio:  <http://www.swows.org/tuio#>
+PREFIX vp:    <http://www.swows.org/viewport#> 
+PREFIX swi:   <http://www.swows.org/instance#>
+
+CONSTRUCT {
+  ?circle :source ?tracked .
+  ?circle :creationTime ?newCircleCreationTime .
+  ?circle :centerX ?circleCenterX .
+  ?circle :centerY ?circleCenterY .
+}
+WHERE {
+  GRAPH :viewPortInfo {
+    swi:GraphRoot
+      vp:vpWidth ?vpWidth ;
+      vp:vpHeight ?vpHeight .
+  } .
+  {
+      SELECT
+        ?tracked
+        ( MAX(?circleCreationTime) + ?circlePeriod  AS ?newCircleCreationTime )
+      WHERE {
+        GRAPH :circleAges {
+          ?circle :source ?tracked .
+          ?circle :creationTime ?circleCreationTime .
+        } .
+        GRAPH :configuration {
+          swi:GraphRoot
+            :circlePeriod ?circlePeriod
+        } .
+      } GROUP BY ?tracked ?circlePeriod
+  } 
+  UNION {
+      SELECT
+        ?tracked
+        ( ?creationTime  AS ?newCircleCreationTime )
+      WHERE {
+        ?tracked a tuio:Cursor .
+        ?tracked tuio:source tuio:defaultSource .
+        ?tracked tuio:creationTime ?creationTime .
+        FILTER NOT EXISTS { 
+          GRAPH :circleAges {
+            ?circle :source ?tracked .
+          }
+        }
+      }
+  } .
+  ?tracked tuio:position ?point .
+  ?point tuio:x ?trackedX .
+  ?point tuio:y ?trackedY .
+  BIND( ?trackedX * ?vpWidth AS ?circleCenterX ) .
+  BIND( ?trackedY * ?vpHeight AS ?circleCenterY ) .
+  tuio:defaultSource tuio:updateTime ?updateTime .
+  FILTER( ?newCircleCreationTime <= ?updateTime ) .
+  BIND( URI(CONCAT(STR(:circle_), MD5(CONCAT(STR(?tracked),STR(?newCircleCreationTime))))) AS ?circle ) .
+}
+

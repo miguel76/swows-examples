@@ -1,0 +1,116 @@
+@prefix :        <http://www.swows.org/examples/circles#> .
+@prefix svg:     <http://uispin.org/svg#> .
+@prefix uix:     <http://www.swows.org/uix#> .
+@prefix tuio:    <http://www.swows.org/tuio#> .
+@prefix xml:    <http://www.swows.org/xml#> .
+@prefix sp:      <http://spinrdf.org/sp#> .
+@prefix spinx:   <http://www.swows.org/spinx#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix vp:   <http://www.swows.org/viewport#> .
+@prefix swi:   <http://www.swows.org/instance#> .
+@prefix rdfSyntax:   <http://www.swows.org/syntaxes/RDF/> .
+@prefix query: <http://jena.hpl.hp.com/2003/07/query/> .
+
+swi:OutputDataset
+  a spinx:UnionGraph ;
+  spinx:input :svgDocument, :circlesSvg .
+
+:circleAges
+ a spinx:UpdatableGraph ;
+ spinx:addGraph 
+[ a spinx:ConstructGraph ;
+  spinx:input
+    [ a spinx:InlineDataset ;
+       spinx:input
+        swi:InputDataset ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :viewPortInfo ;
+          spinx:input :viewPortInfo ] ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :configuration ;
+          spinx:input :configuration ] ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :circleAges ;
+          spinx:input :circleAges ] ] ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <circleAgesNew.sparql> ;
+      spinx:syntax query:SPARQL_11 ] ];
+
+ spinx:deleteGraph 
+[ a spinx:ConstructGraph ;
+  spinx:input
+    [ a spinx:InlineDataset ;
+       spinx:input
+        :circleAges ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :viewPortInfo ;
+          spinx:input :viewPortInfo ] ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :circles ;
+          spinx:input :circles ] ] ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <circleAgesDelete.sparql> ;
+      spinx:syntax query:SPARQL_11 ] ]
+
+# ]
+.
+
+:circles
+#  a spinx:LoggedGraph ;
+#  spinx:input [
+  a spinx:ConstructGraph ;
+  spinx:input
+    [ a spinx:InlineDataset ;
+      spinx:input :circleAges ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :configuration ;
+          spinx:input :configuration ] ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id swi:InputDataset ;
+          spinx:input swi:InputDataset ] ] ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <circles.sparql> ;
+      spinx:syntax query:SPARQL_11 ]
+# ]
+.
+
+:circlesSvg
+#  a spinx:LoggedGraph ;
+#  spinx:input [
+  a spinx:ConstructGraph ;
+  spinx:input :circles ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <circlesSvg.sparql> ;
+      spinx:syntax query:SPARQL_11 ]
+# ]
+.
+
+:svgDocument
+  a spinx:ConstructGraph ;
+  spinx:input :viewPortInfo ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <svgDoc.sparql> ;
+      spinx:syntax query:SPARQL_11 ] .
+
+:viewPortInfo
+  a spinx:IncludedGraph ;
+  spinx:url <viewPortInfo.n3> ;
+  spinx:syntax rdfSyntax:N3 .
+
+:configuration
+  a spinx:IncludedGraph ;
+  spinx:url <config.n3> ;
+  spinx:syntax rdfSyntax:N3 .
+

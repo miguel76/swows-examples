@@ -1,0 +1,11 @@
+@prefix :        <http://www.swows.org/examples/circles#> .
+@prefix dir:     <file:///home/miguel/TUIO/circles/> .
+@prefix swi:     <http://www.swows.org/instance#> .
+@prefix tuio:    <http://www.swows.org/tuio#> .
+@prefix vp:      <http://www.swows.org/viewport#> .
+
+:circle_ea88a14ccc5ba836d969d48b99a828da
+      :centerX 180.8000000 ;
+      :centerY 68.99999760 ;
+      :creationTime 8.676153 ;
+      :source <http://www.swows.org/tuio/instance#point_15568565> .

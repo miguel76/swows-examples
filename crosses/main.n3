@@ -1,0 +1,83 @@
+@prefix :        <http://www.swows.org/test1#> .
+@prefix svg:     <http://uispin.org/svg#> .
+@prefix uix:     <http://www.swows.org/uix#> .
+@prefix tuio:    <http://www.swows.org/tuio#> .
+@prefix xml:    <http://www.swows.org/xml#> .
+@prefix sp:      <http://spinrdf.org/sp#> .
+@prefix spinx:   <http://www.swows.org/spinx#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix vp:   <http://www.swows.org/viewport#> .
+@prefix swi:   <http://www.swows.org/instance#> .
+@prefix rdfSyntax:   <http://www.swows.org/syntaxes/RDF/> .
+@prefix query: <http://jena.hpl.hp.com/2003/07/query/> .
+
+swi:OutputDataset
+  a spinx:UnionGraph ;
+  spinx:input <#circleFromTracked>, <#svgDocument>, <#meshGraph> .
+
+<#circleFromTracked>
+  a spinx:ConstructGraph ;
+  spinx:input
+    [ a spinx:InlineDataset ;
+      spinx:input swi:InputDataset ;
+      spinx:namedInput 
+        [ a spinx:NamedGraph ;
+          spinx:id :viewPortInfo ;
+          spinx:input :viewPortInfo ] ] ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <crosses.sparql> ;
+      spinx:syntax query:SPARQL_11 ] .
+
+<#svgDocument>
+  a spinx:ConstructGraph ;
+  spinx:input :viewPortInfo ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <svgBox.sparql> ;
+      spinx:syntax query:SPARQL_11 ] .
+
+<#rangeGraph>
+  a spinx:IntegerRange ;
+  spinx:intervalStart "0"^^xsd:integer ;
+  spinx:intervalEnd "10"^^xsd:integer .
+
+<#meshGraph>
+  a spinx:UnionGraph ;
+  spinx:input <#meshCommon>, <#meshHlines>, <#meshVlines> .
+
+<#meshCommon>
+  a spinx:IncludedGraph ;
+  spinx:url <meshStyle.n3> ;
+  spinx:syntax rdfSyntax:N3 .
+
+<#meshHlines>
+  a spinx:ConstructGraph ;
+  spinx:input <#rangeAndViewPort> ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <meshHlines.sparql> ;
+      spinx:syntax query:SPARQL_11 ] .
+
+<#meshVlines>
+  a spinx:ConstructGraph ;
+  spinx:input <#rangeAndViewPort> ;
+  spinx:config
+    [ a spinx:IncludedGraph ;
+      spinx:url <meshVlines.sparql> ;
+      spinx:syntax query:SPARQL_11 ] .
+
+<#rangeAndViewPort>
+  a spinx:InlineDataset ;
+  spinx:input <#rangeGraph> ;
+  spinx:namedInput 
+    [ a spinx:NamedGraph ;
+      spinx:id :viewPortInfo ;
+      spinx:input :viewPortInfo ] .
+
+:viewPortInfo
+  a spinx:IncludedGraph ;
+  spinx:url <viewBox.n3> ;
+  spinx:syntax rdfSyntax:N3 .
+
+

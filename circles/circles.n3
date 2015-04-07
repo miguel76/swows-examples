@@ -1,0 +1,12 @@
+ @prefix :        <http://www.swows.org/examples/circles#> .
+@prefix dir:     <file:///home/miguel/TUIO/circles/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix swi:     <http://www.swows.org/instance#> .
+@prefix tuio:    <http://www.swows.org/tuio#> .
+@prefix vp:      <http://www.swows.org/viewport#> .
+
+:circle_a7ea23c18845df1ed9832343ae382cdd
+      :centerX 172.80000 ;
+      :centerY 104.99999760 ;
+      :radius 111.083e0 .
+

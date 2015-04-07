@@ -1,0 +1,32 @@
+PREFIX :      <http://www.swows.org/test1#>
+PREFIX xml:   <http://www.swows.org/xml#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX sfn:   <http://www.swows.org/function#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vp:    <http://www.swows.org/viewport#> 
+CONSTRUCT {
+  :svgContainer
+    xml:hasChild ?hLine .
+  ?hLine
+    a xml:Element ;
+    xml:namespace <http://www.w3.org/2000/svg> ;
+    xml:nodeName "path"^^xsd:string ;
+    xml:hasAttribute ?hLine_d, :mesh_line_style.
+  ?hLine_d
+    a xml:Attr ;
+    xml:nodeName "d"^^xsd:string ;
+    xml:nodeValue ?hLine_d_value .
+}
+WHERE {
+  <http://www.swows.org/rootedGraphs/instance#root> rdfs:member ?hIndex .
+  BIND( URI(CONCAT(STR(:hLine_), MD5(STR(?hIndex)))) AS ?hLine ) .
+  BIND( URI(CONCAT(STR(:hLine_d_), MD5(STR(?hIndex)))) AS ?hLine_d ) .
+  BIND( STR( xsd:decimal(?hIndex * ?vpHeight) / 10 ) AS ?hY ) .
+  BIND( CONCAT( "M 0,", ?hY, " ", STR(?vpWidth), ",", ?hY ) AS ?hLine_d_value ) .
+  GRAPH :viewPortInfo {
+    <http://www.swows.org/rootedGraphs/instance#root>
+      vp:vpWidth ?vpWidth ;
+      vp:vpHeight ?vpHeight .
+  } .
+}
+

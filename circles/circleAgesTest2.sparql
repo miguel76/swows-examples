@@ -1,0 +1,39 @@
+PREFIX :      <http://www.swows.org/examples/circles#>
+PREFIX tuio:  <http://www.swows.org/tuio#>
+PREFIX vp:    <http://www.swows.org/viewport#> 
+PREFIX swi:   <http://www.swows.org/instance#>
+PREFIX dir:   </home/miguel/TUIO/circles/>
+
+CONSTRUCT {
+  ?circle :source ?tracked .
+  ?circle :creationTime ?newCircleCreationTime .
+}
+WHERE {
+ {
+  tuio:defaultSource tuio:updateTime ?updateTime .
+  ?tracked tuio:position ?point .
+  {
+      SELECT
+        ?tracked
+        ( ?creationTime  AS ?newCircleCreationTime )
+      WHERE {
+        ?tracked a tuio:Cursor .
+        ?tracked tuio:source tuio:defaultSource .
+        ?tracked tuio:creationTime ?creationTime .
+        FILTER NOT EXISTS { 
+          GRAPH dir:emptyGraph.n3 {
+            ?circle :source ?tracked .
+          }
+        }
+      }
+  } .
+  GRAPH dir:viewPortInfo.n3 {
+    swi:GraphRoot
+      vp:vpWidth ?vpWidth ;
+      vp:vpHeight ?vpHeight .
+  } .
+  BIND( URI(CONCAT(STR(:circle_), MD5(STR(?tracked)+STR(?newCircleCreationTime)))) AS ?circle ) .
+  FILTER( ?newCircleCreationTime <= ?updateTime ) .
+ } 
+}
+
